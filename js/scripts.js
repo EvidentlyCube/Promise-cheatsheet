@@ -24,7 +24,7 @@ function createToc($){
         $toc.append($tocGroup);
         $h2.attr('id', id);
 
-        $('h3').each(function(){
+        $group.find('h3').each(function(){
             var $this = $(this);
             var id = slugify($this.text());
             $this.attr('id', id);
@@ -45,7 +45,7 @@ function scrollToElementInLocation($){
 function rerunScriptsWhileCatchingOutput($){
     $('.promise-article').each(function(){
         var $this = $(this);
-        var $code = $this.find('code')
+        var $code = $this.find('code');
         var $results = $this.find('.results');
         var $script = $code.find('script');
         var scriptJS = $script.html();

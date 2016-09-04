@@ -251,6 +251,44 @@
             </section>
         </article>
     </section>
+
+    <section class="promise-group">
+        <header>
+            <h2>Complex promise behaviors</h2>
+        </header>
+
+        <article class="promise-article">
+            <header>
+                <h3>Calling then() twice on the same promise is valid and creates two separate promise branches</h3>
+            </header>
+            <section>
+                <pre class="code"><code>
+                    <script>
+                        var promise = Promise.resolve();
+
+                        promise.then(function(){
+                            log('Branch #1 - do a reject');
+                            return Promise.reject();
+
+                        }).then(function(){
+                            log("Resolve handler not called because previous promise was rejected")
+                        });
+
+                        promise.then(function(){
+                            log('Branch #2 - do a resolve');
+                            return Promise.resolve();
+
+                        }).catch(function(){
+                            log('Caught reject - not called because rejection happened in the other branch')
+                        });
+
+                        log("End of script.");
+                    </script>
+                </code></pre>
+                <ol class="results"></ol>
+            </section>
+        </article>
+    </section>
 </article>
 </body>
 </html>
