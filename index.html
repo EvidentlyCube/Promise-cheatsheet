@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8">
 
-    <title>The HTML5 Herald</title>
-    <meta name="description" content="The HTML5 Herald">
-    <meta name="author" content="SitePoint">
+    <title>Javascript Promise Cheatsheet</title>
+    <meta name="description" content="Javascript Promise Cheatsheet">
+    <meta name="author" content="Maurycy Zarzycki, Retrocade.net">
 
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"
@@ -25,13 +25,32 @@
         <h1>JS Promise cheatsheet</h1>
         <section>
             <p>
-                This document contains various examples on how promises behave in different situations. It is created and maintained by <a href="https://github.com/RetrocadeNet/">Maurycy Zarzycki, Retrocade.net</a>, its source is available on
+                This document contains various examples on how promises behave in different situations. It is created
+                and maintained by <a href="https://github.com/RetrocadeNet/">Maurycy Zarzycki, Retrocade.net</a>, its
+                source is available on <a href="https://github.com/RetrocadeNet/Promise-cheatsheet">Github</a>. All
+                suggestions and issues can be communicated via Github's
+                <a href="https://github.com/RetrocadeNet/Promise-cheatsheet/issues">Issues page</a>.
+            </p>
+            <p>
+                Recommended reading: <a href="https://promisesaplus.com/">Promises/A+</a>.
             </p>
         </section>
     </header>
+    <section class="toc">
+        <header>
+            <h2>Table of Contents</h2>
+        </header>
+        <article>
+            <section>
+                <ul>
+                    <li><a href="#promise-vocabulary">Promise vocabulary</a></li>
+                </ul>
+            </section>
+        </article>
+    </section>
     <section class="promise-vocabulary">
         <header>
-            <h2>Promise vocabulary</h2>
+            <h2 id="promise-vocabulary">Promise vocabulary</h2>
         </header>
         <article>
             <section>
@@ -69,8 +88,11 @@
         </article>
     </section>
 
-    <section>
-        <h2>Basic promise functions</h2>
+    <section class="promise-group">
+        <header>
+            <h2>Basic promise behaviors</h2>
+        </header>
+
         <article class="promise-article">
             <header>
                 <h3>Promise executor is called immediately upon promise creation</h3>
@@ -200,12 +222,13 @@
         </article>
         <article class="promise-article">
             <header>
-                <h3>Nested promise resolves first</h3>
+                <h3>Nested promises are handled first</h3>
             </header>
             <section>
                 <pre class="code"><code>
                     <script>
                         Promise.resolve().then(function () {
+
                             return Promise.resolve().then(function () {
                                 log("This promise tree has to finish first.");
 
@@ -217,7 +240,7 @@
                             });
 
                         }).then(function () {
-                            log("This only resolves once the inner promise is finished.");
+                            log("This is only handled once the inner promise is finished.");
                         });
                     </script>
                 </code></pre>
