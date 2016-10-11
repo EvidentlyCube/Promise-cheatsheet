@@ -194,7 +194,7 @@
                         }).then(function () {
                             log("Never called #4");
 
-                        }, function () {
+                        }).catch(function () {
                             log("First available onRejected handler")
                         });
                     </script>
@@ -215,7 +215,7 @@
                         }).then(function () {
                             log("Never called because of the thrown error");
 
-                        }, function () {
+                        }).catch(function () {
                             log("Throwing an error rejects the promise");
                         });
                     </script>
@@ -223,6 +223,34 @@
                 <ol class="results"></ol>
             </section>
         </article>
+        <article class="promise-article">
+            <header>
+                <h3>Returnin nothing inside catch stops the rejection</h3>
+            </header>
+            <section>
+                <pre class="code"><code>
+                    <script>
+                        Promise.resolve().then(function () {
+                            throw new Error();
+
+                        }).then(function () {
+                            log("Never called because of the thrown error");
+
+                        }).catch(function () {
+                            log("Throwing an error rejects the promise");
+
+                        }).then(function(){
+                            log("Called because nothing was returned from catch");
+
+                        }).catch(function(){
+                            log("Never called");
+                        })
+                    </script>
+                </code></pre>
+                <ol class="results"></ol>
+            </section>
+        </article>
+
         <article class="promise-article">
             <header>
                 <h3>Nested promises are handled first</h3>
@@ -245,6 +273,22 @@
                         }).then(function () {
                             log("This is only handled once the inner promise is finished.");
                         });
+                    </script>
+                </code></pre>
+                <ol class="results"></ol>
+            </section>
+        </article>
+
+        <article class="promise-article">
+            <header>
+                <h3>Passing non-function to then ignores that 'then'</h3>
+            </header>
+            <section>
+                <pre class="code"><code>
+                    <script>
+                        Promise.resolve("This string is logged")
+                            .then("This will not be logged")
+                            .then(log);
                     </script>
                 </code></pre>
                 <ol class="results"></ol>
@@ -283,6 +327,73 @@
                         });
 
                         log("End of script.");
+                    </script>
+                </code></pre>
+                <ol class="results"></ol>
+            </section>
+        </article>
+
+        <article class="promise-article">
+            <header>
+                <h3>Errors thrown inside the executor automatically reject the promise</h3>
+            </header>
+            <section>
+                <pre class="code"><code>
+                    <script>
+                        var promise = new Promise(function(){
+                            log("Throwing an error");
+                            throw new Error("Error");
+                        });
+
+                        promise.catch(function(){
+                            log("Error was caught")
+                        });
+                    </script>
+                </code></pre>
+                <ol class="results"></ol>
+            </section>
+        </article>
+
+        <article class="promise-article">
+            <header>
+                <h3>Returning a resolved promise in executor does not resolve the promise</h3>
+            </header>
+            <section>
+                <pre class="code"><code>
+                    <script>
+                        var promise = new Promise(function(){
+                            log("Returning a resolved promise");
+                            return Promise.resolve();
+                        });
+
+                        promise.then(function(){
+                            log("This is never called")
+                        });
+                    </script>
+                </code></pre>
+                <ol class="results"></ol>
+            </section>
+        </article>
+
+        <article class="promise-article">
+            <header>
+                <h3>Resolving the promise multiple times ignores the subsequent calls</h3>
+            </header>
+            <section>
+                <pre class="code"><code>
+                    <script>
+                        var promise = new Promise(function(resolve){
+                            log("First resolve call");
+                            resolve();
+                            log("Second resolve call");
+                            resolve();
+                            log("Third resolve call");
+                            resolve();
+                        });
+
+                        promise.then(function(){
+                            log("Resolved the promise")
+                        });
                     </script>
                 </code></pre>
                 <ol class="results"></ol>
