@@ -402,28 +402,30 @@
 
         <article class="promise-article">
             <header>
-                <h3>Doing Promise.resolve() on another promise provides bizarre results and should be avoided</h3>
+                <h3>Doing Promise.resolve() on another promise passes it on</h3>
             </header>
             <section>
                 <pre class="code"><code>
                     <script>
+
                         // Test 1
-                        Promise.resolve(Promise.resolve('Test1'))
+                        var promiseTest1 = new Promise(function (resolve, reject) {
+                            resolve("Resolved 1");
+                        });
+
+                        Promise.resolve(promiseTest1)
                                 .then(function(data){
+                                    console.log(data);
                                     log('Test1::Then - ' + data);
                                 })
                                 .catch(function(data){
                                     log('Test1::Catch - ' + data);
                                 });
 
-                        // Test 2
-                        var promise2 = new Promise(function (resolve, reject) {
-                            reject("Rejected result");
-                        });
 
-                        Promise.resolve(promise)
+                        // Test 2
+                        Promise.resolve(Promise.resolve('Resolved 2'))
                                 .then(function(data){
-                                    console.log(data);
                                     log('Test2::Then - ' + data);
                                 })
                                 .catch(function(data){
@@ -431,12 +433,26 @@
                                 });
 
                         // Test 3
-                        Promise.resolve(Promise.reject('Test3'))
+                        var promiseTest3 = new Promise(function (resolve, reject) {
+                            reject("Rejected 3");
+                        });
+
+                        Promise.resolve(promiseTest3)
                                 .then(function(data){
+                                    console.log(data);
                                     log('Test3::Then - ' + data);
                                 })
                                 .catch(function(data){
                                     log('Test3::Catch - ' + data);
+                                });
+
+                        // Test 4
+                        Promise.resolve(Promise.reject('Rejected 4'))
+                                .then(function(data){
+                                    log('Test4::Then - ' + data);
+                                })
+                                .catch(function(data){
+                                    log('Test4::Catch - ' + data);
                                 });
                     </script>
                 </code></pre>
